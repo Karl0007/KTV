@@ -22,6 +22,7 @@ public:
 	static SongQueue & getInstance();
 
 	bool addSong(Song*);
+	bool addSongFirst(Song*);
 	Song* nextSong();
 	bool setScore(int);
 	bool deletSong(Song*);

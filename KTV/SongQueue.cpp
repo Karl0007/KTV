@@ -30,6 +30,16 @@ bool SongQueue::addSong(Song * ptr)
 	return true;
 }
 
+bool SongQueue::addSongFirst(Song *ptr)
+{
+	for (auto i = m_userSongs.begin(); i != m_userSongs.end(); ++i) {
+		if (**i == *ptr)
+			return false;
+	}
+	m_userSongs.push_front(ptr);
+	return true;
+}
+
 Song* SongQueue::nextSong()
 {
 	if (m_userSongs.size() == 0)

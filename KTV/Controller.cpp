@@ -46,7 +46,7 @@ REREAD:
 void Controller::First()
 {
 	View::getInstance().clearScreen();
-	View::getInstance().showMessage("欢迎使用KTV点歌 v0.9");
+	View::getInstance().showMessage("欢迎使用KTV点歌 v0.91");
 	View::getInstance().showMessage("作者：181860007 陈盛恺 karl07");
 	View::getInstance().showMessage("https://github.com/Karl0007/");
 	View::getInstance().getKeyDown();
@@ -55,7 +55,7 @@ void Controller::First()
 void Controller::Last()
 {
 	View::getInstance().clearScreen();
-	View::getInstance().showMessage("感谢使用KTV点歌 v0.9");
+	View::getInstance().showMessage("感谢使用KTV点歌 v0.91");
 	View::getInstance().showMessage("作者：181860007 陈盛恺 karl07");
 	View::getInstance().showMessage("https://github.com/Karl0007/");
 	View::getInstance().getKeyDown();
@@ -117,6 +117,8 @@ void Controller::User()
 	view.showMessage("4 ： 所有歌曲");
 	view.showMessage("5 ： 已点歌曲");
 	view.showMessage("6 ： 切    歌");
+	view.showMessage("7 ： 删除歌曲");
+	view.showMessage("8 ： 置顶歌曲");
 	view.showMessage("0 ： 退    出");
 	vector<Song*> table;
 	Song* tmp = nullptr;
@@ -155,6 +157,50 @@ REREAD:
 			return;
 		}
 
+	case 7:
+		table = SongQueue::getInstance().getList();
+		if (table.empty()) {
+			view.showMessage("播放列表为空");
+			view.getKeyDown();
+			User();
+			return;
+		}
+		else {
+			auto tmp = Select(table, true);
+			if (tmp) {
+				view.showMessage("删除成功 ：" + tmp->getName() + "(" + tmp->getSiner() + ")");
+				SongQueue::getInstance().deletSong(tmp);
+			}	
+			else {
+				view.showMessage("取消删除");
+			}
+			view.getKeyDown();
+			User();
+			return;
+		}
+
+	case 8:
+		table = SongQueue::getInstance().getList();
+		if (table.empty()) {
+			view.showMessage("播放列表为空");
+			view.getKeyDown();
+			User();
+			return;
+		}
+		else {
+			auto tmp = Select(table, true);
+			if (tmp) {
+				view.showMessage("置顶成功 ：" + tmp->getName() + "(" + tmp->getSiner() + ")");
+				SongQueue::getInstance().deletSong(tmp);
+				SongQueue::getInstance().addSongFirst(tmp);
+			}
+			else {
+				view.showMessage("取消置顶");
+			}
+			view.getKeyDown();
+			User();
+			return;
+		}
 	SELECT:
 		if (table.empty()) {
 			view.showMessage("未找到歌曲！");
